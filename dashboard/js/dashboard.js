@@ -27,7 +27,7 @@ $(document).ready(function () {
        features: []
    });
 
-   var icon = new ol.style.Icon({src: 'images/icons/iconembajada.png'})
+   var icon = new ol.style.Icon({src: 'images/icons/iconoairport.png'})
     
    var style = new ol.style.Style({
        image: icon
@@ -63,13 +63,14 @@ $(document).ready(function () {
 
        $.get('data/manizales/external/all.json').always(function(data){
            results = data.results.reduce(function(a, b){return Object.assign({}, a, b);});
+           var result = results["airport"]
 
-           point = results.school[0]
-            
-           feature = new ol.Feature({
-               geometry: new ol.geom.Point(ol.proj.fromLonLat([point.lon, point.lat]))
+           result.forEach(function(point){
+              feature = new ol.Feature({
+                  geometry: new ol.geom.Point(ol.proj.fromLonLat([point.lon, point.lat]))
+              });
+              mysource.addFeature(feature);
            });
-           mysource.addFeature(feature);           
        });
        
        //map.addInteraction(draw);
