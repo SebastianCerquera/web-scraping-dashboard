@@ -42,6 +42,8 @@ $(document).ready(function () {
 
    // https://gis.stackexchange.com/questions/252946/what-are-the-possible-listeners-and-event-types-for-an-openlayers-map-ol-map
    map.on('click', function (e) {
+
+       // https://openstreetmap.be/en/projects/howto/openlayers.html
        feature = new ol.Feature({
            geometry: new ol.geom.Point(ol.proj.fromLonLat([-73.6299223, 4.132035]))
        });
