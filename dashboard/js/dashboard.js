@@ -23,22 +23,29 @@ $(document).ready(function () {
         })
    });
 
-   var source = new ol.source.Vector({
-       features: []
-   });
+   var createFeaturesLayer = function(interestPoints){
+       var source = new ol.source.Vector({
+           features: []
+       });
+        
+       var style = new ol.style.Style({
+           image: new ol.style.Icon({src: interestPoints.icon})
+         });
+        
+       var vector = new ol.layer.Vector({
+           source: source,
+           style: style
+       });
 
-   var icon = new ol.style.Icon({src: 'images/icons/iconoairport.png'})
-    
-   var style = new ol.style.Style({
-       image: icon
-     });
-    
-   var vector = new ol.layer.Vector({
-       source: source,
-       style: style
-   });
-   map.addLayer(vector);
-   window.mysource = source;
+       interestPoints.places.forEach(function(point){
+          feature = new ol.Feature({
+              geometry: new ol.geom.Point(ol.proj.fromLonLat([point.lon, point.lat]))
+          });
+          source.addFeature(feature);
+       });
+
+       map.addLayer(vector);
+   };
 
    var getViewPortBounds = function(map){
        coordinates = map.getView().calculateExtent()
@@ -56,16 +63,11 @@ $(document).ready(function () {
 
        $.get('data/manizales/external/all.json').always(function(data){
            results = data.results.reduce(function(a, b){return Object.assign({}, a, b);});
-           var result = results["airport"]
-
-           result.forEach(function(point){
-              feature = new ol.Feature({
-                  geometry: new ol.geom.Point(ol.proj.fromLonLat([point.lon, point.lat]))
-              });
-              mysource.addFeature(feature);
-           });
+           createFeaturesLayer({
+               icon: 'images/icons/iconoairport.png', 
+               places: results["restaurant"]
+           })
        });
-       
    });
 
    var success = function(data){
@@ -77,34 +79,7 @@ $(document).ready(function () {
        $('#RESULTS').css("height", "55%");
        $('#RESULTS').show();
    }
-    
-   var buildrow = function(entry){
-       var template = "<tr><th scope=\"col\">%Superficie%</th><th scope=\"col\">%Precio%</th><th scope=\"col\">%Estrato%</th><th scope=\"col\">%Administracion%</th></tr>";
-        
-       template = template.replace(/%Superficie%/, entry['surface']);
-       template = template.replace(/%Precio%/, entry['surface']);
-       template = template.replace(/%Estrato%/, entry['surface']);
-       template = template.replace(/%Administracion%/, entry['surface']);
-    
-       return template;
-   }
-
-   var buildCoordinate = function(entry){
-       var template = "<tr><th scope=\"col\">%cluster_longitude%</th><th scope=\"col\">%cluster_latitude%</th></tr>";
-        
-       template = template.replace(/%cluster_longitude%/, entry['cluster_longitude']);
-       template = template.replace(/%cluster_latitude%/, entry['cluster_latitude']);
-    
-       return template;
-   }
-   
-   var buildBody = function(data, rowBuilder){
-      var results = data['results']["schools"], i = 0, finalHTML = "";
-      for(; i<results.length; i++)
-          finalHTML = finalHTML + rowBuilder(results[i])
-      return finalHTML;
-   }
-    
+       
    $('#ESTADISTICAS').hide()
    $('#HOME').hide()
    $('#RESULTS').hide()
