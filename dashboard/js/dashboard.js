@@ -5,7 +5,7 @@ $(document).ready(function () {
         collapsible: false
    });
     
-   map = new ol.Map({
+   var map = new ol.Map({
         controls: ol.control.defaults({attribution: false}).extend([attribution]),
         layers: [
             new ol.layer.Tile({
@@ -40,13 +40,6 @@ $(document).ready(function () {
    map.addLayer(vector);
    window.mysource = source;
 
-   /**
-   var draw = new ol.interaction.Draw({
-       source: source,
-       type: 'Circle',
-   });
-   */
-
    var getViewPortBounds = function(map){
        coordinates = map.getView().calculateExtent()
        coordinates_top = [coordinates[0], coordinates[1]]
@@ -73,7 +66,6 @@ $(document).ready(function () {
            });
        });
        
-       //map.addInteraction(draw);
    });
 
    var success = function(data){
@@ -84,8 +76,6 @@ $(document).ready(function () {
        
        $('#RESULTS').css("height", "55%");
        $('#RESULTS').show();
-
-       //payload = JSON.stringify(coordinates)
    }
     
    var buildrow = function(entry){
@@ -114,31 +104,6 @@ $(document).ready(function () {
           finalHTML = finalHTML + rowBuilder(results[i])
       return finalHTML;
    }
-
-
-   /**
-   // https://stackoverflow.com/questions/39216136/how-to-catch-event-after-drawend-added-to-source-in-ol3
-   // https://stackoverflow.com/questions/50926971/how-to-remove-interaction-in-openlayers
-   // https://stackoverflow.com/questions/39216136/how-to-catch-event-after-drawend-added-to-source-in-ol3 
-   search_bounds = []
-   draw.on('drawend', function (e) {
-       map.removeInteraction(draw)
-
-       var feature = e.feature;
-       var geometry = feature.values_.geometry
-
-       // https://stackoverflow.com/questions/30504313/how-to-get-coordinates-of-a-user-drawn-circle-in-openlayers-3
-       var polygon = ol.geom.Polygon.fromCircle(geometry);
-       var coordinates = polygon.getCoordinates()
-       coordinates = coordinates[0]
-
-       var i;
-       for(i=0; i<coordinates.length; i++)
-           search_bounds.push(ol.proj.transform(coordinates[i], 'EPSG:3857', 'EPSG:4326'));
-
-       $.get('data/schools_villavicencio.json').always(success)
-   });
-   */
     
    $('#ESTADISTICAS').hide()
    $('#HOME').hide()
