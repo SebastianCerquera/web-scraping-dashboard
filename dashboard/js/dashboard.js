@@ -38,7 +38,7 @@ $(document).ready(function () {
        style: style
    });
    map.addLayer(vector);
-   window.layer_points = source;
+   window.mysource = source;
 
    /**
    var draw = new ol.interaction.Draw({
@@ -47,13 +47,31 @@ $(document).ready(function () {
    });
    */
 
+   var getViewPortBounds = function(map){
+       coordinates = map.getView().calculateExtent()
+       coordinates_top = [coordinates[0], coordinates[1]]
+       coordinates_bottom = [coordinates[2], coordinates[3]]
+       coordinates_top = ol.proj.transform(coordinates_top, 'EPSG:3857', 'EPSG:4326')
+       coordinates_bottom = ol.proj.transform(coordinates_bottom, 'EPSG:3857', 'EPSG:4326')
+       return coordinates_top.concat(coordinates_bottom)
+   }
+    
    // https://gis.stackexchange.com/questions/252946/what-are-the-possible-listeners-and-event-types-for-an-openlayers-map-ol-map
    map.on('click', function (e) {       
        // https://openstreetmap.be/en/projects/howto/openlayers.html
-       feature = new ol.Feature({
-           geometry: new ol.geom.Point(ol.proj.fromLonLat([-73.6299223, 4.132035]))
+       bounds = getViewPortBounds(map)
+
+       $.get('data/manizales/external/all.json').always(function(data){
+           results = data.results.reduce(function(a, b){return Object.assign({}, a, b);});
+
+           point = results.school[0]
+            
+           feature = new ol.Feature({
+               geometry: new ol.geom.Point(ol.proj.fromLonLat([point.lon, point.lat]))
+           });
+           mysource.addFeature(feature);           
        });
-       source.addFeature(feature);
+       
        //map.addInteraction(draw);
    });
 
@@ -61,11 +79,6 @@ $(document).ready(function () {
        var finalHTML = buildBody(data, buildCoordinate);
        $('tbody').html(finalHTML);
 
-       /*
-       $('#map').css("height", "40%");
-       $('#map').css("width", "40%");
-       $('#map').css("float", "right");
-       */
        $('#map').hide()
        
        $('#RESULTS').css("height", "55%");
@@ -74,10 +87,6 @@ $(document).ready(function () {
        //payload = JSON.stringify(coordinates)
    }
     
-   var filter_publications = function(coordinates){
-       $.get('data/schools_villavicencio.json').always(success)
-   }
-
    var buildrow = function(entry){
        var template = "<tr><th scope=\"col\">%Superficie%</th><th scope=\"col\">%Precio%</th><th scope=\"col\">%Estrato%</th><th scope=\"col\">%Administracion%</th></tr>";
         
@@ -126,7 +135,7 @@ $(document).ready(function () {
        for(i=0; i<coordinates.length; i++)
            search_bounds.push(ol.proj.transform(coordinates[i], 'EPSG:3857', 'EPSG:4326'));
 
-       filter_publications(search_bounds)
+       $.get('data/schools_villavicencio.json').always(success)
    });
    */
     
