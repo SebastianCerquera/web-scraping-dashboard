@@ -30,16 +30,23 @@ $(document).ready(function () {
    var vector = new ol.layer.Vector({
        source: source,
    });
-   map.addLayer(vector); 
+   map.addLayer(vector);
+   window.layer_points = source;
 
+   /**
    var draw = new ol.interaction.Draw({
        source: source,
        type: 'Circle',
    });
+   */
 
    // https://gis.stackexchange.com/questions/252946/what-are-the-possible-listeners-and-event-types-for-an-openlayers-map-ol-map
-   map.on('dblclick', function (e) {
-       map.addInteraction(draw);
+   map.on('click', function (e) {
+       feature = new ol.Feature({
+           geometry: new ol.geom.Point(ol.proj.fromLonLat([-73.6299223, 4.132035]))
+       });
+       source.addFeature(feature);
+       //map.addInteraction(draw);
    });
 
    var success = function(data){
@@ -90,7 +97,8 @@ $(document).ready(function () {
       return finalHTML;
    }
 
-    
+
+   /**
    // https://stackoverflow.com/questions/39216136/how-to-catch-event-after-drawend-added-to-source-in-ol3
    // https://stackoverflow.com/questions/50926971/how-to-remove-interaction-in-openlayers
    // https://stackoverflow.com/questions/39216136/how-to-catch-event-after-drawend-added-to-source-in-ol3 
@@ -112,6 +120,7 @@ $(document).ready(function () {
 
        filter_publications(search_bounds)
    });
+   */
     
    $('#ESTADISTICAS').hide()
    $('#HOME').hide()
