@@ -26,9 +26,16 @@ $(document).ready(function () {
    var source = new ol.source.Vector({
        features: []
    });
+
+   var icon = new ol.style.Icon({src: 'images/icons/iconembajada.png'})
+    
+   var style = new ol.style.Style({
+       image: icon
+     });
     
    var vector = new ol.layer.Vector({
        source: source,
+       style: style
    });
    map.addLayer(vector);
    window.layer_points = source;
@@ -41,8 +48,7 @@ $(document).ready(function () {
    */
 
    // https://gis.stackexchange.com/questions/252946/what-are-the-possible-listeners-and-event-types-for-an-openlayers-map-ol-map
-   map.on('click', function (e) {
-
+   map.on('click', function (e) {       
        // https://openstreetmap.be/en/projects/howto/openlayers.html
        feature = new ol.Feature({
            geometry: new ol.geom.Point(ol.proj.fromLonLat([-73.6299223, 4.132035]))
