@@ -114,6 +114,24 @@ $(document).ready(function () {
    };
 
    window.interestPointLayers = {};
+
+   var iconPaths = {
+      'airport': 'images/icons/iconoparkamusement.png',
+      'amusement_park': 'images/icons/iconoparkamusement.png',
+      'bank': 'images/icons/iconobank.png',
+      'church': 'images/icons/iconochurch.png',
+      'hospital': 'images/icons/iconohospital.png',
+      'library': 'images/icons/iconobookstore.png',
+      'local_government_office': 'images/icons/iconlocalgovernmenteoffice.png',
+      'park': 'images/icons/iconopark.png',
+      'police': 'images/icons/iconpolice.png',
+      'restaurant': 'images/icons/iconrestaurant.png',
+      'school': 'images/icons/iconoschool.png',
+      'secondary_school': 'images/icons/iconschoolsecundary.png',
+      'shopping_mall': 'images/icons/iconmall.png',
+      'university': 'images/icons/iconouniversity.png'
+   }
+
     
    $.get(getCityPath()).always(function(data){
        var results = data.results.reduce(function(a, b){return Object.assign({}, a, b);});
@@ -125,7 +143,7 @@ $(document).ready(function () {
            counter++;
            
            var vector = createFeaturesLayer({
-               icon: 'images/icons/iconoairport.png', 
+               icon: iconPaths[key],
                places: point
            });
 
