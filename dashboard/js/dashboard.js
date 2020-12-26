@@ -4,7 +4,73 @@ $(document).ready(function () {
    var attribution = new ol.control.Attribution({
         collapsible: false
    });
+
+   var getCity = function(){
+      var url = new URL(window.location.href);
+      var city = url.searchParams.get("city"); 
+      return city;
+   };
     
+   var getCityPath = function(){
+      return 'data/' + getCity() + '/external/all.json';
+   };
+
+   var coordinates_bounds = {
+        'manizales': {
+            'lat': {
+                'center': 5.061856,
+                'lower': 5.017395,
+                'upper': 5.119305
+            },
+            'lon':{
+                'center': -75.49892,
+                'lower': -75.556431,
+                'upper': -75.410519
+            }
+        },
+        'fusagasuga': {
+            'lat': {
+                'center': 4.332970,
+                'lower': 5.017395,
+                'upper': 5.119305
+            },
+            'lon':{
+                'center': -74.37222,
+                'lower': -75.556431,
+                'upper': -75.410519
+            }
+        },
+        'villavicencio': {
+            'lat': {
+                'center': 4.132035,
+                'lower': 5.017395,
+                'upper': 5.119305
+            },
+            'lon':{
+                'center': -73.6299223,
+                'lower': -75.556431,
+                'upper': -75.410519
+            }
+        }
+   };
+    
+   var iconPaths = {
+      'airport': 'images/icons/iconoparkamusement.png',
+      'amusement_park': 'images/icons/iconoparkamusement.png',
+      'bank': 'images/icons/iconobank.png',
+      'church': 'images/icons/iconochurch.png',
+      'hospital': 'images/icons/iconohospital.png',
+      'library': 'images/icons/iconobookstore.png',
+      'local_government_office': 'images/icons/iconlocalgovernmenteoffice.png',
+      'park': 'images/icons/iconopark.png',
+      'police': 'images/icons/iconpolice.png',
+      'restaurant': 'images/icons/iconrestaurant.png',
+      'school': 'images/icons/iconoschool.png',
+      'secondary_school': 'images/icons/iconschoolsecundary.png',
+      'shopping_mall': 'images/icons/iconmall.png',
+      'university': 'images/icons/iconouniversity.png'
+   };
+   
    var map = new ol.Map({
         controls: ol.control.defaults({attribution: false}).extend([attribution]),
         layers: [
@@ -17,7 +83,7 @@ $(document).ready(function () {
         ],
         target: 'map',
         view: new ol.View({
-            center: ol.proj.fromLonLat([-73.6299223, 4.132035]),
+            center: ol.proj.fromLonLat([coordinates_bounds[getCity()]['lon']['center'], coordinates_bounds[getCity()]['lat']['center']]),
             maxZoom: 18,
             zoom: 14
         })
@@ -106,31 +172,11 @@ $(document).ready(function () {
    /*
      Los resultados del API se estan quemando, debido a la natiraleza de la data no es necesario desplegar el servidor
      en cada ocasion, como el resultado es el mismo se guardo una copia en el repo y esta se sirve de forma estatica.
-   */ 
-   var getCityPath = function(path){
-      var url = new URL(window.location.href);
-      var city = url.searchParams.get("city"); 
-      return 'data/' + city + '/external/all.json';
-   };
+   */
+
 
    window.interestPointLayers = {};
 
-   var iconPaths = {
-      'airport': 'images/icons/iconoparkamusement.png',
-      'amusement_park': 'images/icons/iconoparkamusement.png',
-      'bank': 'images/icons/iconobank.png',
-      'church': 'images/icons/iconochurch.png',
-      'hospital': 'images/icons/iconohospital.png',
-      'library': 'images/icons/iconobookstore.png',
-      'local_government_office': 'images/icons/iconlocalgovernmenteoffice.png',
-      'park': 'images/icons/iconopark.png',
-      'police': 'images/icons/iconpolice.png',
-      'restaurant': 'images/icons/iconrestaurant.png',
-      'school': 'images/icons/iconoschool.png',
-      'secondary_school': 'images/icons/iconschoolsecundary.png',
-      'shopping_mall': 'images/icons/iconmall.png',
-      'university': 'images/icons/iconouniversity.png'
-   }
 
     
    $.get(getCityPath()).always(function(data){
