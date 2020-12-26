@@ -22,8 +22,34 @@ $(document).ready(function () {
             zoom: 14
         })
    });
-    window.map = map;
+   window.map = map;
 
+
+   var createHeatmapLayer = function(interestPoints){
+       var source = new ol.source.Vector({
+           features: []
+       });
+        
+       var vector = new ol.layer.Heatmap({
+           source: source,
+           blur: parseInt(10, 10),
+           radius: parseInt(10, 10),
+           weight: function (feature) {
+               console.log(feature);
+             return 1;
+           }
+       });
+       
+       interestPoints.places.forEach(function(point){
+          feature = new ol.Feature({
+              geometry: new ol.geom.Point(ol.proj.fromLonLat([point.lon, point.lat]))
+          });
+          source.addFeature(feature);
+       });
+
+       return vector;       
+   }
+    
    var createFeaturesLayer = function(interestPoints){
        var source = new ol.source.Vector({
            features: []
@@ -100,6 +126,12 @@ $(document).ready(function () {
            });
 
            window.interestPointLayers[key] = vector;
+
+           vector = createHeatmapLayer({
+               places: results[key]
+           });
+           
+           map.addLayer(vector);
        });
    });
 
