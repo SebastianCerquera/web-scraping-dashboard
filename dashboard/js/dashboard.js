@@ -22,6 +22,7 @@ $(document).ready(function () {
             zoom: 14
         })
    });
+    window.map = map;
 
    var createFeaturesLayer = function(interestPoints){
        var source = new ol.source.Vector({
@@ -44,7 +45,7 @@ $(document).ready(function () {
           source.addFeature(feature);
        });
 
-       map.addLayer(vector);
+       return vector;
    };
 
    var getViewPortBounds = function(map){
@@ -55,20 +56,9 @@ $(document).ready(function () {
        coordinates_bottom = ol.proj.transform(coordinates_bottom, 'EPSG:3857', 'EPSG:4326')
        return coordinates_top.concat(coordinates_bottom)
    }
-    
-   // https://gis.stackexchange.com/questions/252946/what-are-the-possible-listeners-and-event-types-for-an-openlayers-map-ol-map
-   map.on('click', function (e) {       
-       // https://openstreetmap.be/en/projects/howto/openlayers.html
-       bounds = getViewPortBounds(map)
 
-       $.get('data/manizales/external/all.json').always(function(data){
-           results = data.results.reduce(function(a, b){return Object.assign({}, a, b);});
-           createFeaturesLayer({
-               icon: 'images/icons/iconoairport.png', 
-               places: results["restaurant"]
-           })
-       });
-   });
+   // https://gis.stackexchange.com/questions/252946/what-are-the-possible-listeners-and-event-types-for-an-openlayers-map-ol-map
+   map.on('click', function (e) {});
 
    var success = function(data){
        var finalHTML = buildBody(data, buildCoordinate);
@@ -83,6 +73,48 @@ $(document).ready(function () {
    $('#ESTADISTICAS').hide()
    $('#HOME').hide()
    $('#RESULTS').hide()
+
+   // https://openstreetmap.be/en/projects/howto/openlayers.html
+   var bounds = getViewPortBounds(map)
+
+   var getCityPath = function(path){
+       return 'data/manizales/external/all.json';
+   };
+
+   window.interestPointLayers = {};
+    
+   $.get(getCityPath()).always(function(data){
+       var results = data.results.reduce(function(a, b){return Object.assign({}, a, b);});
+
+       Object.keys(results).forEach(function(key){
+           var vector = createFeaturesLayer({
+               icon: 'images/icons/iconoairport.png', 
+               places: results[key]
+           });
+
+           window.interestPointLayers[key] = vector;
+       });
+   });
+
+   $('.btn-realtor').on('click', function(e){
+       var button = this;
+       var vector = interestPointLayers[this.id];
+       if ( $(this).hasClass('btn-primary') ){
+           map.addLayer(vector);
+           $(this).removeClass('btn-primary');
+           $(this).addClass('btn-success')
+       }else {
+           map.removeLayer(vector);
+           $(this).removeClass('btn-success')           
+           $(this).addClass('btn-primary');
+           
+       }
+           
+       
+   });
+
+
+    
     
 });
 
