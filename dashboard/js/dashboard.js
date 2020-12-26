@@ -25,18 +25,17 @@ $(document).ready(function () {
    window.map = map;
 
 
-   var createHeatmapLayer = function(interestPoints){
+    var createHeatmapLayer = function(interestPoints, weight){
        var source = new ol.source.Vector({
            features: []
        });
-        
+       
        var vector = new ol.layer.Heatmap({
            source: source,
-           blur: parseInt(10, 10),
-           radius: parseInt(10, 10),
+           blur: 50,
+           radius: 20,
            weight: function (feature) {
-               console.log(feature);
-             return 1;
+             return weight;
            }
        });
        
@@ -119,17 +118,22 @@ $(document).ready(function () {
    $.get(getCityPath()).always(function(data){
        var results = data.results.reduce(function(a, b){return Object.assign({}, a, b);});
 
+       var counter = 1;
        Object.keys(results).forEach(function(key){
+           var point = results[key];
+           point['weigth'] = counter;
+           counter++;
+           
            var vector = createFeaturesLayer({
                icon: 'images/icons/iconoairport.png', 
-               places: results[key]
+               places: point
            });
 
            window.interestPointLayers[key] = vector;
 
            vector = createHeatmapLayer({
-               places: results[key]
-           });
+               places: point
+           }, point['weigth']);
            
            map.addLayer(vector);
        });
