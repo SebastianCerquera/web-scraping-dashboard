@@ -77,8 +77,15 @@ $(document).ready(function () {
    // https://openstreetmap.be/en/projects/howto/openlayers.html
    var bounds = getViewPortBounds(map)
 
+
+   /*
+     Los resultados del API se estan quemando, debido a la natiraleza de la data no es necesario desplegar el servidor
+     en cada ocasion, como el resultado es el mismo se guardo una copia en el repo y esta se sirve de forma estatica.
+   */ 
    var getCityPath = function(path){
-       return 'data/manizales/external/all.json';
+      var url = new URL(window.location.href);
+      var city = url.searchParams.get("city"); 
+      return 'data/' + city + '/external/all.json';
    };
 
    window.interestPointLayers = {};
@@ -106,15 +113,9 @@ $(document).ready(function () {
        }else {
            map.removeLayer(vector);
            $(this).removeClass('btn-success')           
-           $(this).addClass('btn-primary');
-           
+           $(this).addClass('btn-primary');           
        }
-           
-       
    });
-
-
-    
     
 });
 
