@@ -135,3 +135,13 @@ section{
     margin-top: 3px;
     margin-bottom: 10px;
 }
+.tipografia{
+    margin-top: -720px;
+    border: 1px solid black;
+    width: 20%;
+    margin-left: 78%;
+    font-size: 20px;
+}
+.tipo{
+    margin-top: 10px;
+}
