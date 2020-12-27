@@ -7,15 +7,15 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 section{
-    max-width: 1280px;
-    max-height: 720px;
+    width: 1280px;
+    height: 720px;
     border: 1px solid black;
 }
 .container{
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    height: 720px;
+    height: 100%;
 }
 .fondo-banner{
     width: 13%;
