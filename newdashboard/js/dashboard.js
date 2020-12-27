@@ -26,64 +26,47 @@ $(document).ready(function () {
      * 
      */    
      var getCityPath = function(){
-        return '/data/' + getCity() + '/external/all.json';
+        return 'data/' + getCity() + '/external/all.json';
      };
-
-    /*
-     * 
-     * for city in "manizales" "fusagasuga" "villavicencio"; do
-     *    for property_type in "apartamentos" "casas"; do
-     *        for post_type in "arriendo" "venta"; do
-     *            mkdir -p  $city/posts/$property_type/$post_type/
-     *            curl -XGET localhost:8000/$city/posts/$property_type/$post_type/all > $city/posts/$property_type/$post_type/all.json
-     *        done
-     *    done
-     * done
-     * 
-     */
-    var getPostPath = function(property_type, post_type){
-        return '/data/' + getCity() + '/posts/' + property_type + '/' + post_type + '/all.json';
-    };
-
-    
-    var coordinates_bounds = {
-         'manizales': {
-             'lat': {
-                 'center': 5.061856,
-                 'lower': 5.017395,
-                 'upper': 5.119305
-             },
-             'lon':{
-                 'center': -75.49892,
-                 'lower': -75.556431,
-                 'upper': -75.410519
-             }
-         },
-         'fusagasuga': {
-             'lat': {
-                 'center': 4.332970,
-                 'lower': 5.017395,
-                 'upper': 5.119305
-             },
-             'lon':{
-                 'center': -74.37222,
-                 'lower': -75.556431,
-                 'upper': -75.410519
-             }
-         },
-         'villavicencio': {
-             'lat': {
-                 'center': 4.132035,
-                 'lower': 5.017395,
-                 'upper': 5.119305
-             },
-             'lon':{
-                 'center': -73.6299223,
-                 'lower': -75.556431,
-                 'upper': -75.410519
-             }
-         }
-    };
+   
+     var coordinates_bounds = {
+          'manizales': {
+              'lat': {
+                  'center': 5.061856,
+                  'lower': 5.017395,
+                  'upper': 5.119305
+              },
+              'lon':{
+                  'center': -75.49892,
+                  'lower': -75.556431,
+                  'upper': -75.410519
+              }
+          },
+          'fusagasuga': {
+              'lat': {
+                  'center': 4.332970,
+                  'lower': 5.017395,
+                  'upper': 5.119305
+              },
+              'lon':{
+                  'center': -74.37222,
+                  'lower': -75.556431,
+                  'upper': -75.410519
+              }
+          },
+          'villavicencio': {
+              'lat': {
+                  'center': 4.132035,
+                  'lower': 5.017395,
+                  'upper': 5.119305
+              },
+              'lon':{
+                  'center': -73.6299223,
+                  'lower': -75.556431,
+                  'upper': -75.410519
+              }
+          }
+     };
       
      var iconPaths = {
         'airport': 'images/icons/iconoparkamusement.png',
@@ -204,30 +187,29 @@ $(document).ready(function () {
        Los resultados del API se estan quemando, debido a la natiraleza de la data no es necesario desplegar el servidor
        en cada ocasion, como el resultado es el mismo se guardo una copia en el repo y esta se sirve de forma estatica.
      */
+   
+   
      window.interestPointLayers = {};
+   
+   
       
      $.get(getCityPath()).always(function(data){
          var results = data.results.reduce(function(a, b){return Object.assign({}, a, b);});
+   
+         var counter = 1;
          Object.keys(results).forEach(function(key){
-             var point = results[key];             
+             var point = results[key];
+             point['weigth'] = counter;
+             counter++;
+             
              var vector = createFeaturesLayer({
                  icon: iconPaths[key],
                  places: point
              });
    
              window.interestPointLayers[key] = vector;
-         });
-     });
-
-    $.get(getPostPath("apartamentos", "venta")).always(function(data){
-         var results = data.results;
    
-         var counter = 1;
-         Object.keys(results).forEach(function(point){
-             point['weigth'] = counter;
-             counter++;
-                
-             var vector = createHeatmapLayer({
+             vector = createHeatmapLayer({
                  places: point
              }, point['weigth']);
              
