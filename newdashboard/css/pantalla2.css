@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+body {
+    display:flex;
+    justify-content: center;
+    margin: 0%;
+    padding: 0%;
+    font-family: 'Montserrat', sans-serif;
+}
+section{
+    max-width: 1280px;
+    max-height: 720px;
+    border: 1px solid black;
+}
+.banner{
+    width: 13%;
+    height: 720px;
+}
+.fondo-banner{
+    width: 100%;
+    height: 100%;
+}
+.img{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 720px;
+}
+.img-banner{
+    width: 100%;
+    height: 720px;
+}
+.rellenobanner{
+    margin-top: -700px;
+    width: 100%;
+    margin-left: 3.5%;
+}
+.rellenobanner img{
+    width: 100%;
+}
+.tipografia16 a{
+    margin-top: 20px;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    font-size: 18px;
+    border-bottom: 1px solid white;
+    color: white;
+    text-decoration: none;
+}
+.tipografia17 a{
+    margin-top: 20px;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid white;
+    font-size: 18px;
+    color: white;
+    text-decoration: none;
+}
+.tipografia18 a{
+    padding-top: 20px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid white;
+    font-size: 18px;
+    color: white;
+    text-decoration: none;
+}
+.tipografia19 a{
+    padding-top: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid white;
+    font-size: 18px;
+    color: white;
+    text-decoration: none;
+}
+.tipografia16{
+    margin-left: -10px;
+    text-align: center;
+    margin-top: 40px;
+}
+.tipografia17{
+    margin-left: -10px;
+    text-align: center;
+    margin-top: 60px;
+}
+.tipografia18{
+    margin-left: -10px;
+    text-align: center;
+    margin-top: 60px;
+}
+.tipografia19{
+    margin-left: -10px;
+    text-align: center;
+    margin-top: 60px;
+}
+.centro{
+    margin-left: 13%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: -720px;
+    width: 65%;
+}
+.mapa{
+    height: 630px;
+}
+.centro .letra1{
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    width: 100%;
+}
+.centro img{
+    width: 100%;
+}
+.icono16{
+    margin-left: 14%;
+    width: 85%;
+}
+.letras{
+    margin-bottom: -78px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 13%;
+}
+.letra2, .letra3{
+    text-align: center;
+    margin-top: 12px;
+    width: 100%;
+}
+.letra2{
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+.letra3{
+    margin-top: 3px;
+    margin-bottom: 10px;
+}
