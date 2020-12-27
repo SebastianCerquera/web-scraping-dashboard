@@ -203,17 +203,17 @@ $(document).ready(function () {
          });
      });
    
-     $('.btn-realtor').on('click', function(e){
+     $('.btn').on('click', function(e){
          var button = this;
          var vector = interestPointLayers[this.id];
-         if ( $(this).hasClass('btn-primary') ){
+         if ( $(this).hasClass('btn') ){
              map.addLayer(vector);
-             $(this).removeClass('btn-primary');
-             $(this).addClass('btn-success')
+             $(this).removeClass('btn');
+             $(this).addClass('btn-selected')
          }else {
              map.removeLayer(vector);
-             $(this).removeClass('btn-success')           
-             $(this).addClass('btn-primary');           
+             $(this).removeClass('btn-selected')           
+             $(this).addClass('btn');           
          }
      });
     
