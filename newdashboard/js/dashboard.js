@@ -10,8 +10,17 @@ $(document).ready(function () {
         var city = url.searchParams.get("city"); 
         return city;
      };
-    
 
+     var getPropertyType = function(){
+        var url = new URL(window.location.href);
+        return url.searchParams.get("property_type");
+     };
+
+     var getPostType = function(){
+        var url = new URL(window.location.href);
+        return url.searchParams.get("post_type");
+     };
+    
     /*
      * This is cached file of the API endpoint, the results actually but it was cheap to develop the API.
      * 
@@ -28,7 +37,23 @@ $(document).ready(function () {
      var getCityPath = function(){
         return 'data/' + getCity() + '/external/all.json';
      };
-   
+
+     /*
+      * 
+      * for city in "manizales" "fusagasuga" "villavicencio"; do
+      *    for property_type in "apartamentos" "casas"; do
+      *        for post_type in "arriendo" "venta"; do
+      *            mkdir -p  $city/posts/$property_type/$post_type/
+      *            curl -XGET localhost:8000/$city/posts/$property_type/$post_type/all > $city/posts/$property_type/$post_type/all.json
+      *        done
+      *    done
+      * done
+      * 
+      */
+     var getPostPath = function(property_type, post_type){
+         return '/data/' + getCity() + '/posts/' + property_type + '/' + post_type + '/all.json';
+     };
+        
      var coordinates_bounds = {
           'manizales': {
               'lat': {
@@ -102,29 +127,28 @@ $(document).ready(function () {
               zoom: 14
           })
      });
-     window.map = map;
-
 
       var createHeatmapLayer = function(interestPoints, weight){
          var source = new ol.source.Vector({
              features: []
          });
          
-         var vector = new ol.layer.Heatmap({
-             source: source,
-             blur: 50,
-             radius: 20,
-             weight: function (feature) {
-               return weight;
-             }
-         });
-         
-         interestPoints.places.forEach(function(point){
+         interestPoints.forEach(function(point){
             feature = new ol.Feature({
                 geometry: new ol.geom.Point(ol.proj.fromLonLat([point.lon, point.lat]))
             });
             source.addFeature(feature);
          });
+
+         var vector = new ol.layer.Heatmap({
+             source: source,
+             blur: 10,
+             radius: 5,
+             weight: function (feature) {
+               return weight;
+             }
+         });
+
    
          return vector;       
      }
@@ -177,32 +201,65 @@ $(document).ready(function () {
        Los resultados del API se estan quemando, debido a la natiraleza de la data no es necesario desplegar el servidor
        en cada ocasion, como el resultado es el mismo se guardo una copia en el repo y esta se sirve de forma estatica.
      */
-     window.interestPointLayers = {};
-      
+     var interestPointLayers = {};
+
+
      $.get(getCityPath()).always(function(data){
          var results = data.results.reduce(function(a, b){return Object.assign({}, a, b);});
-   
-         var counter = 1;
          Object.keys(results).forEach(function(key){
-             var point = results[key];
-             point['weigth'] = counter;
-             counter++;
-             
+             var point = results[key];             
              var vector = createFeaturesLayer({
                  icon: iconPaths[key],
                  places: point
              });
    
-             window.interestPointLayers[key] = vector;
-   
-             vector = createHeatmapLayer({
-                 places: point
-             }, point['weigth']);
-             
-             map.addLayer(vector);
+             interestPointLayers[key] = vector;
          });
      });
-   
+
+     $.get(getPostPath("apartamentos", "venta")).always(function(data){
+          var results = data.results;
+    
+          var counter = 1;
+          results.forEach(function(point){
+              point['weigth'] = counter;
+              counter++;                 
+          });
+
+          var vector = createHeatmapLayer(results, counter);
+          
+          map.addLayer(vector);
+
+      });
+
+     $('#ventas_arriendos').on('click', function(e){
+         var url = new URL(window.location.href);
+         
+         if($(this).text() === "VENTAS"){
+             url.searchParams.set("post_type", "arriendo")
+             $(this).text("ARRIENDOS");
+         } else {
+             url.searchParams.set("post_type", "venta")
+             $(this).text("VENTAS");
+         }
+  
+         window.location.href = url.href;        
+     });
+  
+     $('#casas_apartamentos').on('click', function(e){
+         var url = new URL(window.location.href);
+  
+         if($(this).text() === "CASAS"){
+             url.searchParams.set("property_type", "apartamentos")
+             $(this).text("APARTAMENTOS");
+         } else {
+             url.searchParams.set("property_type", "casas")
+             $(this).text("CASAS");
+         }
+  
+         window.location.href = url.href;
+     });
+    
      $('a.btn').on('click', function(e){
          var button = this;
          var vector = interestPointLayers[this.id];
