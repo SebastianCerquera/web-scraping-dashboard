@@ -163,17 +163,7 @@ $(document).ready(function () {
      }
    
      // https://gis.stackexchange.com/questions/252946/what-are-the-possible-listeners-and-event-types-for-an-openlayers-map-ol-map
-     map.on('click', function (e) {});
-   
-     var success = function(data){
-         var finalHTML = buildBody(data, buildCoordinate);
-         $('tbody').html(finalHTML);
-   
-         $('#map').hide()
-         
-         $('#RESULTS').css("height", "55%");
-         $('#RESULTS').show();
-     }
+     map.on('click', function (e) {});   
          
      $('#ESTADISTICAS').hide()
      $('#HOME').hide()
@@ -187,11 +177,7 @@ $(document).ready(function () {
        Los resultados del API se estan quemando, debido a la natiraleza de la data no es necesario desplegar el servidor
        en cada ocasion, como el resultado es el mismo se guardo una copia en el repo y esta se sirve de forma estatica.
      */
-   
-   
      window.interestPointLayers = {};
-   
-   
       
      $.get(getCityPath()).always(function(data){
          var results = data.results.reduce(function(a, b){return Object.assign({}, a, b);});
