@@ -243,10 +243,18 @@ $(document).ready(function () {
              url.searchParams.set("post_type", "venta")
              $(this).text("VENTA");
          }
-  
+         
          window.location.href = url.href;        
      });
 
+     $('#precio_conteos').on('click', function(e){
+         if($(this).text() === "PRECIO"){
+             $(this).text("CONTEO");
+         } else {
+             $(this).text("PRECIO");
+         }
+     });
+    
      $('#casas_apartamentos').text(getPropertyType().toUpperCase())    
      $('#casas_apartamentos').on('click', function(e){
          var url = new URL(window.location.href);
