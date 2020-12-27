@@ -137,12 +137,35 @@ section{
     margin-bottom: 10px;
 }
 .tipografia{
+    padding-left: 12px;
+    padding-right: 12px;
     margin-top: -720px;
-    border: 1px solid black;
+    border-left: 1px solid black;
     width: 20%;
-    margin-left: 78%;
+    margin-left: 79%;
     font-size: 20px;
 }
 .tipo{
+    margin-top: 18px;
+}
+.tipografia1{
+    margin-top: 19px;
+}
+.tipografia15{
+    margin-bottom: 15px;
+}
+.tipografia a{
+    text-decoration: none;
+    color: black;
+}
+.x{
+    margin-top: -28px;
+    margin-left: 40px;
+}
+.imgx2{
     margin-top: 10px;
+}
+.x2{
+    margin-top: -43px;
+    margin-left: 40px;
 }
