@@ -217,7 +217,7 @@ $(document).ready(function () {
          });
      });
 
-     $.get(getPostPath("apartamentos", "venta")).always(function(data){
+    $.get(getPostPath(getPropertyType(), getPostType())).always(function(data){
           var results = data.results;
     
           var counter = 1;
@@ -232,20 +232,22 @@ $(document).ready(function () {
 
       });
 
+     $('#ventas_arriendos').text(getPostType().toUpperCase())
      $('#ventas_arriendos').on('click', function(e){
          var url = new URL(window.location.href);
          
-         if($(this).text() === "VENTAS"){
+         if($(this).text() === "VENTA"){
              url.searchParams.set("post_type", "arriendo")
-             $(this).text("ARRIENDOS");
+             $(this).text("ARRIENDO");
          } else {
              url.searchParams.set("post_type", "venta")
-             $(this).text("VENTAS");
+             $(this).text("VENTA");
          }
   
          window.location.href = url.href;        
      });
-  
+
+     $('#casas_apartamentos').text(getPropertyType().toUpperCase())    
      $('#casas_apartamentos').on('click', function(e){
          var url = new URL(window.location.href);
   
