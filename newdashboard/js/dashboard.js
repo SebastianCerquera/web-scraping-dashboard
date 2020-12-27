@@ -203,16 +203,16 @@ $(document).ready(function () {
          });
      });
    
-     $('.btn').on('click', function(e){
+     $('a.btn').on('click', function(e){
          var button = this;
          var vector = interestPointLayers[this.id];
          if ( $(this).hasClass('btn') ){
              map.addLayer(vector);
              $(this).removeClass('btn');
-             $(this).addClass('btn-selected')
+             $(this).addClass('btn-seleccion')
          }else {
              map.removeLayer(vector);
-             $(this).removeClass('btn-selected')           
+             $(this).removeClass('btn-seleccion')           
              $(this).addClass('btn');           
          }
      });
