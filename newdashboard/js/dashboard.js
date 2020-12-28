@@ -133,31 +133,60 @@ $(document).ready(function () {
           })
      });
 
-      var createHeatmapLayer = function(interestPoints, weight){
-         var source = new ol.source.Vector({
-             features: []
-         });
-         
-         interestPoints.forEach(function(point){
-            feature = new ol.Feature({
-                geometry: new ol.geom.Point(ol.proj.fromLonLat([point.lon, point.lat]))
-            });
-            source.addFeature(feature);
-         });
+     var defaultFeaturesBuilder = function(source){
+         return function(point){
+             feature = new ol.Feature({
+                 geometry: new ol.geom.Point(ol.proj.fromLonLat([point.lon, point.lat]))
+             });
+             source.addFeature(feature);
+         };
+     };
+  
+     var createHeatmapLayer = function(interestPoints, featuresBuilder, weight){
+          var source = new ol.source.Vector({
+              features: []
+          });
+  
+         var builder = featuresBuilder(source);
+         interestPoints.forEach(builder);
+  
+          var vector = new ol.layer.Heatmap({
+              source: source,
+              blur: 10,
+              radius: 5,
+              weight: weight
+          });
+    
+          return vector;       
+     };
 
-         var vector = new ol.layer.Heatmap({
-             source: source,
-             blur: 10,
-             radius: 5,
-             weight: function (feature) {
-               return weight;
+     var createNoWeightHeatmapLayer = function(interestPoints){
+         return createHeatmapLayer(
+             interestPoints,
+             defaultFeaturesBuilder,
+             function(feature){
+                 return 500;
              }
-         });
+         );
+     };
 
-   
-         return vector;       
-     }
-      
+
+     var defaultFeaturesBuilder = function(source){
+         return function(point){
+             feature = new ol.Feature({
+                 geometry: new ol.geom.Point(ol.proj.fromLonLat([point.lon, point.lat]))
+             });
+             source.addFeature(feature);
+         };
+     };
+    
+     var createWeightedHeatmapLayer = function(interestPoints){
+         return createHeatmapLayer(interestPoints, function(feature){
+             return 1;
+         });
+     };
+    
+    
      var createFeaturesLayer = function(interestPoints){
          var source = new ol.source.Vector({
              features: []
@@ -224,14 +253,16 @@ $(document).ready(function () {
     
     $.get(getPostPath(getPropertyType(), getPostType())).always(function(data){
           var results = data.results;
-    
+
+          /*
           var counter = 1;
           results.forEach(function(point){
               point['weigth'] = counter;
               counter++;                 
           });
+          */
 
-          var vector = createHeatmapLayer(results, counter);
+          var vector = createNoWeightHeatmapLayer(results);
           map.addLayer(vector);
       });
 
