@@ -20,6 +20,11 @@ $(document).ready(function () {
         var url = new URL(window.location.href);
         return url.searchParams.get("post_type");
      };
+
+     var getHeatmapConf = function(){
+        var url = new URL(window.location.href);
+        return url.searchParams.get("heatmap");
+     };
     
     /*
      * This is cached file of the API endpoint, the results actually but it was cheap to develop the API.
@@ -50,7 +55,7 @@ $(document).ready(function () {
       * done
       * 
       */
-     var getPostPath = function(property_type, post_type){
+    var getPostPath = function(property_type, post_type){
          return '/data/' + getCity() + '/posts/' + property_type + '/' + post_type + '/all.json';
      };
         
@@ -216,7 +221,7 @@ $(document).ready(function () {
              interestPointLayers[key] = vector;
          });
      });
-
+    
     $.get(getPostPath(getPropertyType(), getPostType())).always(function(data){
           var results = data.results;
     
@@ -227,9 +232,7 @@ $(document).ready(function () {
           });
 
           var vector = createHeatmapLayer(results, counter);
-          
           map.addLayer(vector);
-
       });
 
      $('#ventas_arriendos').text(getPostType().toUpperCase())
@@ -247,12 +250,21 @@ $(document).ready(function () {
          window.location.href = url.href;        
      });
 
+
+
+     $('#precio_conteos').text(getHeatmapConf().toUpperCase())    
      $('#precio_conteos').on('click', function(e){
+         var url = new URL(window.location.href);
+         
          if($(this).text() === "PRECIO"){
+             url.searchParams.set("heatmap", "conteo")
              $(this).text("CONTEO");
          } else {
+             url.searchParams.set("heatmap", "precio")
              $(this).text("PRECIO");
          }
+
+         window.location.href = url.href;         
      });
     
      $('#casas_apartamentos').text(getPropertyType().toUpperCase())    
