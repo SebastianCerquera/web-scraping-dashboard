@@ -133,28 +133,34 @@ $(document).ready(function () {
           })
      });
 
-     var defaultFeaturesBuilder = function(source){
-         return function(point){
+    var defaultFeaturesBuilder = function(source){
+        var weight = function(feature){
+                 return 500;
+        };
+
+        var builder = function(point){
              feature = new ol.Feature({
                  geometry: new ol.geom.Point(ol.proj.fromLonLat([point.lon, point.lat]))
              });
              source.addFeature(feature);
-         };
+        };
+
+        return {'weight': weight, 'features': builder};
      };
   
-     var createHeatmapLayer = function(interestPoints, featuresBuilder, weight){
+     var createHeatmapLayer = function(interestPoints, featuresBuilder){
           var source = new ol.source.Vector({
               features: []
           });
   
          var builder = featuresBuilder(source);
-         interestPoints.forEach(builder);
+         interestPoints.forEach(builder['features']);
   
           var vector = new ol.layer.Heatmap({
               source: source,
               blur: 10,
               radius: 5,
-              weight: weight
+              weight: builder['weight']
           });
     
           return vector;       
@@ -163,29 +169,35 @@ $(document).ready(function () {
      var createNoWeightHeatmapLayer = function(interestPoints){
          return createHeatmapLayer(
              interestPoints,
-             defaultFeaturesBuilder,
-             function(feature){
-                 return 500;
-             }
+             defaultFeaturesBuilder             
          );
      };
 
 
-     var defaultFeaturesBuilder = function(source){
-         return function(point){
-             feature = new ol.Feature({
+    var weightedFeaturesBuilder = function(source){
+        var features = {};
+        
+        var builder = function(point){
+             var feature = new ol.Feature({
                  geometry: new ol.geom.Point(ol.proj.fromLonLat([point.lon, point.lat]))
              });
+             features[feature.id] = point;           
              source.addFeature(feature);
-         };
+        };
+
+        var weight = function(feature){
+             return features[feature.id].price*1000000;
+        }
+
+        return {'weight': weight, 'features': builder};
      };
     
      var createWeightedHeatmapLayer = function(interestPoints){
-         return createHeatmapLayer(interestPoints, function(feature){
-             return 1;
-         });
+         return createHeatmapLayer(
+             interestPoints,
+             weightedFeaturesBuilder
+         );
      };
-    
     
      var createFeaturesLayer = function(interestPoints){
          var source = new ol.source.Vector({
