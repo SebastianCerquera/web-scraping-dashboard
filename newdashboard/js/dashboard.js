@@ -337,6 +337,9 @@ $(document).ready(function () {
              $(this).addClass('btn');           
          }
      });
+
+     $('#avaluador').attr('href', '/pantalla3.html?city=' + getCity() + '&property_type=' +
+                       getPropertyType() + '&post_type=' + getPostType() + '&heatmap=conteo');
     
 });
 

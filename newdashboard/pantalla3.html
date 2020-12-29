@@ -1,0 +1,91 @@
+<html>
+<head>
+    <meta charset="utf-8" lang="es">
+    <link rel="stylesheet" href="css/pantalla2.css"  type="text/css">
+
+    <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="js/avaluador.js"></script>    
+</head>
+<body>
+    <section>
+    <div class="container">
+            <div class="banner">
+                <div class="fondo-banner">
+                    <div class="img">
+                    <img class="img-banner" src="img/bannerfinal.png">
+                    </div>
+                    <div class="rellenobanner">
+                    <div class="logo"><img src="img/logofinal.png"></div>
+                    <div class="tipografia16"><a href="/">INICIO</a></div>
+                    <div class="tipografia19"><a id="explorador" href="/pantalla2.html">EXPLORADOR</a></div>
+                    <div class="tipografia17"><a href="">--------- </a></div>
+                    <div class="tipografia17"><a href="">--------- </a></div>
+                    <div class="tipografia19"><a id="ventas_arriendos">VENTAS</a></div>
+                    <div class="tipografia19"><a id="casas_apartamentos">CASAS</a></div>
+                    </div>
+                </div>
+                </div>
+                <div class="centro">
+                    <div id="map" class="mapa">
+
+                    </div>
+                    <div class="letra1">
+                        <div class="letras"><br>
+                        <span class="letra2">MEDIDA</span><br>
+                        <span class="letra3">---------</span>
+                        <br>
+                    </div>
+                        <div class="icono16"><img src="img/barracolor.png"></div>
+                    </div>
+                </div>
+                <div class="tipografia">
+                  <div>
+                      <label for="cars">Habitaciones:</label>
+                      <input type="text"></input>
+                  </div>
+                  <div>
+                      <label for="cars">Antiguedad:</label>
+                       
+                      <select name="cars" id="cars">
+                        <option value="1">1 a 8</option>
+                        <option value="2">8 a 15</option>
+                        <option value="3">15 a 30</option>
+                        <option value="4"></option>
+                      </select>
+                  </div>
+
+                  <div>
+                      <label for="cars">Baños:</label>
+                      <input type="text"></input>                       
+                  </div>
+
+                  <div>
+                      <label for="cars">Administracion:</label>
+                      <input type="text"></input>                       
+                  </div>
+                  
+                  <div>
+                    <label for="cars">Estrato:</label>
+                    
+                     <select name="cars" id="cars">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="1">5</option>
+                        <option value="2">6</option>
+                      </select>
+                  </div>
+
+                  <div>
+                      <button>Buscar</button>                       
+                  </div>
+                  
+                </div>
+            </div>
+        </section>
+</body>
+</html>
