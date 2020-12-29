@@ -186,7 +186,7 @@ $(document).ready(function () {
         };
 
         var weight = function(feature){
-             return features[feature.id].price*1000000;
+             return features[feature.id].price*10000;
         }
 
         return {'weight': weight, 'features': builder};
@@ -264,18 +264,16 @@ $(document).ready(function () {
      });
     
     $.get(getPostPath(getPropertyType(), getPostType())).always(function(data){
-          var results = data.results;
-
-          /*
-          var counter = 1;
-          results.forEach(function(point){
-              point['weigth'] = counter;
-              counter++;                 
-          });
-          */
-
-          var vector = createNoWeightHeatmapLayer(results);
-          map.addLayer(vector);
+        var results = data.results;
+        var conf = getHeatmapConf();
+        var vector;
+        if (conf === "conteo"){
+            vector = createNoWeightHeatmapLayer(results);
+        } else {
+            vector = createWeightedHeatmapLayer(results);            
+        }
+        
+        map.addLayer(vector);
       });
 
      $('#ventas_arriendos').text(getPostType().toUpperCase())
@@ -294,7 +292,7 @@ $(document).ready(function () {
      });
 
 
-
+     /* No pude cambiar el heatmap usando la propiedad weight.
      $('#precio_conteos').text(getHeatmapConf().toUpperCase())    
      $('#precio_conteos').on('click', function(e){
          var url = new URL(window.location.href);
@@ -309,6 +307,7 @@ $(document).ready(function () {
 
          window.location.href = url.href;         
      });
+     */
     
      $('#casas_apartamentos').text(getPropertyType().toUpperCase())    
      $('#casas_apartamentos').on('click', function(e){
