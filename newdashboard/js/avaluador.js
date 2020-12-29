@@ -93,6 +93,47 @@ $(document).ready(function () {
           })
      });
 
+    var features = {
+        'lat': 0.0,
+        'lon': 0.0,
+        'surface': 0.0,
+        'rooms': 0,
+        'baths': 0,
+        'garages': 0,
+        'admon': 0.0,
+        'estrato': 0,
+        'antiguedad': 4
+    };
+    
+
+     var source = new ol.source.Vector({
+         features: []
+     });
+      
+     var vector = new ol.layer.Vector({
+         source: source,
+     });
+     map.addLayer(vector); 
+      
+     // https://gis.stackexchange.com/questions/252946/what-are-the-possible-listeners-and-event-types-for-an-openlayers-map-ol-map
+     map.on('click', function (e) {
+         if(source.getFeatures().length < 1){    
+             var feature = new ol.Feature({
+                 geometry: new ol.geom.Point(ol.proj.fromLonLat(ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326')))
+             });
+             source.addFeature(feature);
+             
+             var coordinates = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
+             var features = {}
+             var formData = new FormData($('#avaluador')[0])
+                 for (var pair of formData.entries()) {
+                 features[pair[0]] = pair[1];
+                 features['lat'] = coordinates[1];
+                 features['lon'] = coordinates[1];
+             }
+             window.features = features;
+         }
+     });  
 
      $('#ventas_arriendos').text(getPostType().toUpperCase())
      $('#ventas_arriendos').on('click', function(e){
@@ -126,5 +167,9 @@ $(document).ready(function () {
     
     $('#explorador').attr('href', '/pantalla2.html?city=' + getCity() + '&property_type=' +
                           getPropertyType() + '&post_type=' + getPostType() + '&heatmap=conteo');
+
+    $('#eval_regressor').on('click', function(e){
+        console.log(e);
+    });
 
 });     

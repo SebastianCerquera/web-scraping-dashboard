@@ -42,47 +42,51 @@
                     </div>
                 </div>
                 <div class="tipografia">
-                  <div>
-                      <label for="cars">Habitaciones:</label>
-                      <input type="text"></input>
-                  </div>
-                  <div>
-                      <label for="cars">Antiguedad:</label>
+                  <form id="avaluador"> 
+                      <div>
+                          <label for="rooms">Habitaciones:</label>
+                          <input id="rooms" name="rooms" type="text"></input>
+                      </div>
+                      <div>
+                          <label for="antiguedad">Antiguedad:</label>
+                           
+                          <select id="antiguedad" name="antiguedad">
+                            <option value="1">1 a 8</option>
+                            <option value="2">8 a 15</option>
+                            <option value="3">15 a 30</option>
+                            <option value="4"></option>
+                          </select>
+                      </div>
                        
-                      <select name="cars" id="cars">
-                        <option value="1">1 a 8</option>
-                        <option value="2">8 a 15</option>
-                        <option value="3">15 a 30</option>
-                        <option value="4"></option>
-                      </select>
-                  </div>
+                      <div>
+                          <label for="baths">Baños:</label>
+                          <input id="baths" name="baths" type="text"></input>                       
+                      </div>
+                       
+                      <div>
+                          <label for="admon">Administracion:</label>
+                          <input id="admon" name="admon" type="text"></input>                       
+                      </div>
+                       
+                      <div>
+                        <label for="estrato">Estrato:</label>
+                        
+                         <select name="estrato" id="estrato">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="1">5</option>
+                            <option value="2">6</option>
+                          </select>
+                      </div>
+                      
+                  </form>
 
-                  <div>
-                      <label for="cars">Baños:</label>
-                      <input type="text"></input>                       
-                  </div>
-
-                  <div>
-                      <label for="cars">Administracion:</label>
-                      <input type="text"></input>                       
-                  </div>
+                      <div>
+                          <button id="eval_regressor">Buscar</button>                       
+                      </div>
                   
-                  <div>
-                    <label for="cars">Estrato:</label>
-                    
-                     <select name="cars" id="cars">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="1">5</option>
-                        <option value="2">6</option>
-                      </select>
-                  </div>
-
-                  <div>
-                      <button>Buscar</button>                       
-                  </div>
                   
                 </div>
             </div>
