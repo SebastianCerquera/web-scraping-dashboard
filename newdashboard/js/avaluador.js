@@ -123,15 +123,7 @@ $(document).ready(function () {
              });
              source.addFeature(feature);
              
-             var coordinates = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
-             var features = {}
-             var formData = new FormData($('#avaluador')[0])
-                 for (var pair of formData.entries()) {
-                 features[pair[0]] = pair[1];
-                 features['lat'] = coordinates[1];
-                 features['lon'] = coordinates[1];
-             }
-             window.features = features;
+             window.coordinates = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
          }
      });  
 
@@ -169,7 +161,23 @@ $(document).ready(function () {
                           getPropertyType() + '&post_type=' + getPostType() + '&heatmap=conteo');
 
     $('#eval_regressor').on('click', function(e){
-        console.log(e);
+        var formData = new FormData($('#avaluador')[0])
+        for (var pair of formData.entries()) {
+            features[pair[0]] = pair[1];
+        }
+
+        features['lat'] = window.coordinates[1];
+        features['lon'] = window.coordinates[0];
+        
+        features["rooms"] = parseInt(features["rooms"]);
+        features["antiguedad"] = parseInt(features["antiguedad"]);
+        features["baths"] = parseInt(features["baths"]);
+        features["admon"] = parseFloat(features["admon"]);
+        features["garages"] = parseInt(features["garages"]);
+        features["surface"] = parseFloat(features["surface"]);
+        features["estrato"] = parseInt(features["estrato"]);
+
+        console.log(features);
     });
 
 });     
