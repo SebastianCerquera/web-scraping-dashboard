@@ -177,7 +177,15 @@ $(document).ready(function () {
         features["surface"] = parseFloat(features["surface"]);
         features["estrato"] = parseInt(features["estrato"]);
 
-        console.log(features);
+        $.ajax({
+          type: "POST",
+          url: '/manizales/posts/apartamentos/arriendo/model',
+          data: JSON.stringify(features),
+          success: function(data){
+              console.log(data)
+          },
+          contentType: 'application/json'
+        });
     });
 
 });     
